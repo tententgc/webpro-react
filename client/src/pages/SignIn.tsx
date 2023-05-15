@@ -11,6 +11,9 @@ const SignInPage: React.FC = () => {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
+        localStorage.getItem( JSON.stringify(user));
+        window.location.href = "/";
+
         console.log(userCredential)
         // ...
       })

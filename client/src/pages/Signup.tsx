@@ -20,6 +20,7 @@ const SignUpPage: React.FC = () => {
         // Signed in
         const user = userCredential.user;
         console.log(userCredential);
+        window.location.href = "/";
         // ...
       })
       .catch((error) => {

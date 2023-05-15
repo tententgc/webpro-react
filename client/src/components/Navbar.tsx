@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-
+import Authentication from './auth/Authentication';
 export default function NavBar() {
   const [navbar, setNavbar] = useState(false);
 
@@ -69,9 +69,7 @@ export default function NavBar() {
                   <Link to="/contact">Contact US</Link>
               </li>
               <li>
-                <Link to="/signin" className="px-4 py-2 font-medium text-white bg-orange-600 rounded-md hover:bg-orange-400">
-                  Sign In
-                </Link>
+                <Authentication />
               </li>
             </ul>
           </div>
