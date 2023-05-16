@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebaseConfig";
+import axios from 'axios';
 
 const SignUpPage: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -9,26 +8,27 @@ const SignUpPage: React.FC = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       alert("Passwords do not match.");
       return;
     }
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        console.log(userCredential);
-        window.location.href = "/";
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // ..
-      });
+    axios.post('http://localhost:3001/api/auth/register', {
+      username,
+      email,
+      password
+    })
+    .then(function (response) {
+      console.log(response);
+      window.location.href = "/";
+    })
+    .catch(function (error) {
+      console.log(error);
+      alert("Error signing up.");
+    });
   };
+      
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -38,7 +38,7 @@ const SignUpPage: React.FC = () => {
             Sign up for your account
           </h2>
         </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        <form className="mt-12 space-y-6 space" onSubmit={handleSubmit}>
           <input type="hidden" name="remember" value="true" />
           <div className="rounded-md shadow-sm -space-y-px">
             <div>

@@ -5,7 +5,6 @@ import Collection from "./pages/Collection";
 import Contact from "./pages/Contact";
 import Nopage from "./pages/Nopage";
 import Layout from "./layouts/Layout";
-import History from "./pages/History";
 import Signup from "./pages/Signup";
 import SignIn from "./pages/SignIn";
 
@@ -19,7 +18,6 @@ export default function App() {
           <Route path="/about" element={<About />} />
           <Route path="/collection" element={<Collection />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/history" element={<History />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="*" element={<Nopage />} />

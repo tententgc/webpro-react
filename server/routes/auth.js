@@ -4,28 +4,31 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user'); // Your User model
 
+
+router.post('/register', async (req, res) => {
+    const { username, email, password } = req.body;
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const user = new User({ username, email, password: hashedPassword });
+
+    await user.save();
+    res.sendStatus(201);
+    console.log("User created successfully");
+});
+
 router.post('/signin', async (req, res) => {
     const { email, password } = req.body;
 
-    // Find user by email
     const user = await User.findOne({ email });
 
-    if (!user) {
-        return res.status(400).json({ message: "User not found" });
+    if (user && await bcrypt.compare(password, user.password)) {
+        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
+        console.log("login successful")
+        res.send({ token, user });
+    } else {
+        console.log("login failed")
+        res.sendStatus(401);
     }
-
-    // Compare passwords
-    const isMatch = await bcrypt.compare(password, user.password);
-
-    if (!isMatch) {
-        return res.status(400).json({ message: "Invalid credentials" });
-    }
-
-    // Sign JWT and return
-    const payload = { userId: user._id };
-    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
-
-    return res.status(200).json({ token, user });
 });
-
 module.exports = router;

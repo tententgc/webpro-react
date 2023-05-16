@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { app, analytics, auth } from "../../firebaseConfig";
-import Navbar from "../Navbar";
-import { signOut, onAuthStateChanged } from "firebase/auth";
 
 const Authentication = () => {
   const [authenticatedUser, setAuthenticatedUser] = useState<string | null>(
@@ -10,28 +7,33 @@ const Authentication = () => {
   );
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const checkUser = () => {
+      const user = JSON.parse(localStorage.getItem("user") || "{}");
+      console.log(user); 
       if (user) {
-        setAuthenticatedUser(user.email);
+        setAuthenticatedUser(user.user);
       } else {
         setAuthenticatedUser(null);
       }
-    });
-    return () => {
-      unsubscribe();
     };
+
+    // Check user status when component mounts
+    checkUser();
+
+    // Re-check user status when localStorage changes
+    window.addEventListener("storage", checkUser);
+
+    // Cleanup listener
+    return () => window.removeEventListener("storage", checkUser);
   }, []);
 
   const handleSignOut = () => {
-    signOut(auth)
-      .then(() => {
-        console.log("sign out");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    localStorage.removeItem("user");
+    setAuthenticatedUser(null);
+    console.log("Signed out");
   };
 
+  console.log(authenticatedUser);
   return (
     <div>
       {authenticatedUser === null ? (
