@@ -27,7 +27,7 @@ const ProfileComponent: React.FC<ProfileComponentProps> = ({
         <p className="text-sm text-gray-600">{description}</p>
       </div>
       <button className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
-        Follow
+        Add Collection
       </button>
     </div>
   );

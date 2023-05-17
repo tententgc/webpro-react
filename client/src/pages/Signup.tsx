@@ -17,7 +17,7 @@ const SignUpPage: React.FC = () => {
     axios.post('http://localhost:3001/api/auth/register', {
       username,
       email,
-      password
+      password, 
     })
     .then(function (response) {
       console.log(response);

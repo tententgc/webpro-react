@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+// import Admin from './auth/Admincheck';
 import Authentication from './auth/Authentication';
 export default function NavBar() {
   const [navbar, setNavbar] = useState(false);
@@ -55,23 +56,7 @@ export default function NavBar() {
               navbar ? 'block' : 'hidden'
             }`}
           >
-            <ul className="items-center justify-center space-y-8 md:flex md:space-x-6 md:space-y-0">
-              <li className="text-gray-600 hover:text-blue-600">
-                <Link to="/home">Home</Link>
-              </li>
-              <li className="text-gray-600 hover:text-blue-600">
-                <Link to="/collection">My Collection</Link>
-              </li>
-              <li className="text-gray-600 hover:text-blue-600">
-                <Link to="/about">About</Link>
-              </li>
-              <li className="text-gray-600 hover:text-blue-600">
-                  <Link to="/contact">Contact</Link>
-              </li>
-              <li>
-                <Authentication />
-              </li>
-            </ul>
+            <Authentication />
           </div>
         </div>
       </div>
