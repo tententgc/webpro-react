@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import axios from 'axios';
+import axios from "axios";
 
 const SignUpPage: React.FC = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [description, setDescription] = useState("");
+  const [profileImage, setProfileImage] = useState<File | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -14,21 +16,33 @@ const SignUpPage: React.FC = () => {
       alert("Passwords do not match.");
       return;
     }
-    axios.post('http://localhost:3001/api/auth/register', {
-      username,
-      email,
-      password, 
-    })
-    .then(function (response) {
-      console.log(response);
-      window.location.href = "/";
-    })
-    .catch(function (error) {
-      console.log(error);
-      alert("Error signing up.");
-    });
+
+    let formData = new FormData();
+    formData.append("username", username);
+    formData.append("email", email);
+    formData.append("password", password);
+    formData.append("description", description);
+    if (profileImage) {
+      formData.append("profileImage", profileImage, profileImage.name);
+    }
+
+    axios
+      .post("http://localhost:3001/api/auth/register", formData)
+      .then(function (response) {
+        console.log(response);
+        window.location.href = "/";
+      })
+      .catch(function (error) {
+        console.log(error);
+        alert("Error signing up.");
+      });
   };
-      
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setProfileImage(e.target.files[0]);
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -38,7 +52,11 @@ const SignUpPage: React.FC = () => {
             Sign up for your account
           </h2>
         </div>
-        <form className="mt-12 space-y-6 space" onSubmit={handleSubmit}>
+        <form
+          className="mt-12 space-y-6 space"
+          onSubmit={handleSubmit}
+          encType="multipart/form-data"
+        >
           <input type="hidden" name="remember" value="true" />
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
@@ -102,6 +120,32 @@ const SignUpPage: React.FC = () => {
                 placeholder="Confirm password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="description" className="sr-only">
+                Description
+              </label>
+              <textarea
+                id="description"
+                name="description"
+                required
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm"
+                placeholder="Describe yourself"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="profile-image" className="sr-only">
+                Profile Image
+              </label>
+              <input
+                id="profile-image"
+                name="profile-image"
+                type="file"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm"
+                onChange={handleImageChange}
               />
             </div>
           </div>

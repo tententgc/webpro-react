@@ -4,18 +4,37 @@ const Post = require('../Models/Post');
 const bcrypt = require('bcrypt');
 
 // Update
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/')
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + '-' + file.originalname)
+    }
+})
+
+const upload = multer({ storage: storage });
 
 router.get('/', async (req, res) => {
     const users = await User.find({});
     res.send(users);
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", upload.single('profileImage'), async (req, res) => {
+
+    console.log(req.body.userId, req.params.id)
     if (req.body.userId === req.params.id) {
 
         if (req.body.password) {
             const salt = await bcrypt.genSalt(10);
             req.body.password = await bcrypt.hash(req.body.password, salt);
+        }
+
+        // Update the profileImage path if a new file is uploaded
+        if (req.file) {
+            req.body.profileImage = req.file.path;
         }
 
         try {
@@ -35,7 +54,6 @@ router.put("/:id", async (req, res) => {
     }
 
 });
-
 //Delete 
 
 router.delete("/:id", async (req, res) => {
