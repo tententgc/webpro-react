@@ -1,4 +1,3 @@
-// ProductCard.tsx
 import React, { useState } from "react";
 
 interface ProductProps {
@@ -16,15 +15,27 @@ const ProductCard: React.FC<ProductProps> = ({
 }) => {
   const [likeCount, setLikeCount] = useState(likes);
   const [liked, setLiked] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const handleLike = () => {
     setLiked(!liked);
     setLikeCount(liked ? likeCount - 1 : likeCount + 1);
   };
 
+  const handleCardClick = () => {
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
   return (
-    <div className="w-80 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-2xl p-4 transform transition ease-in-out">
-      <a href="#">
+    <>
+      <div
+        className="w-80 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-2xl p-4 transform transition ease-in-out cursor-pointer"
+        onClick={handleCardClick}
+      >
         <img
           src={imgSrc}
           alt="Product"
@@ -60,9 +71,28 @@ const ProductCard: React.FC<ProductProps> = ({
             </button>
           </div>
         </div>
-      </a>
-    </div>
+      </div>
+      {modalOpen && (
+        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+          <div className="bg-white rounded-lg p-8">
+            <img src={imgSrc} alt="Product" className="w-64 h-64" />
+            <h3 className="text-xl font-bold text-gray-900">{name}</h3>
+            <p className="text-orange-600 uppercase text-xs font-semibold">
+              {author}
+            </p>
+            <p className="text-gray-600">Likes: {likeCount}</p>
+            <button
+              onClick={closeModal}
+              className="bg-orange-600 text-white px-4 py-2 rounded mt-4"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
 export default ProductCard;
+

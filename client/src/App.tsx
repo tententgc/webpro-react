@@ -14,20 +14,25 @@ import AddCollection from "./pages/AddCollection";
 export default function App() {
   return (
     <Router>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/collection" element={<Collection />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/editprofile" element={<EditProfile />} />
-          <Route path="/addcol" element={<AddCollection />} />
-          <Route path="*" element={<Nopage />} />
-        </Routes>
-      </Layout>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Layout>
+              <Home />
+            </Layout>
+          }
+        />
+        <Route path="/home" element={<Layout><Home /></Layout>} />
+        <Route path="/about" element={<Layout><About /></Layout>} />
+        <Route path="/collection" element={<Layout><Collection /></Layout>} />
+        <Route path="/contact" element={<Layout><Contact /></Layout>} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/editprofile" element={<Layout><EditProfile /></Layout>} />
+        <Route path="/addcol" element={<Layout><AddCollection /></Layout>} />
+        <Route path="*" element={<Layout><Nopage /></Layout>} />
+      </Routes>
     </Router>
   );
 }
