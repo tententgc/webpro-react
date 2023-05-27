@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { BaseURL } from "../api/BaseURL";
 
 const SignInPage: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -7,10 +8,11 @@ const SignInPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("signinlink", BaseURL);
 
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_SERVER_API}/auth/signin`,
+        `${BaseURL}/auth/login`,
         {
           email,
           password,
@@ -19,7 +21,7 @@ const SignInPage: React.FC = () => {
 
       if (response.status === 200) {
         localStorage.setItem("user", JSON.stringify(response.data));
-        window.location.href = "/";
+        window.location.href = "/home";
       } else {
         // Handle error
         alert("Invalid username or password. Please try again.");

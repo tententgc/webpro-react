@@ -1,44 +1,37 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
-// post is edit schema soon 
-
-const PostSchema = new mongoose.Schema(
+const postSchema = mongoose.Schema(
     {
-        userId: { 
-            type: String, 
-            required: true,
-        },
-        username: {
+        userId: {
             type: String,
             required: true,
         },
-        title: {
-            type: String,
-            required: true,
-            unique: true,
-        },
-        desc: {
+        firstName: {
             type: String,
             required: true,
         },
-        photo: {
+        lastName: {
             type: String,
-            required: false,
+            required: true,
         },
-        categories: {
-            type: Array,
-            required: false,
-        }, 
+        Title: String, 
+        Brand: String,
+        Price: Number, 
+        description: String,
+        picturePath: String,
+        userPicturePath: String,
         likes: {
-            type: Number,
-            default: 0,
+            type: Map,
+            of: Boolean,
         },
         comments: {
             type: Array,
             default: [],
         },
-    }
-    , { timestamps: true });
+    },
+    { timestamps: true }
+);
 
-const PostModel = mongoose.models.Post || mongoose.model('Post', PostSchema);
-module.exports = PostModel;
+const Post = mongoose.model("Post", postSchema);
+
+export default Post;

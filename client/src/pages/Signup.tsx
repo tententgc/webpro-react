@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { BaseURL } from "../api/BaseURL";
 
 const SignUpPage: React.FC = () => {
-  const [username, setUsername] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [userName, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -18,7 +21,9 @@ const SignUpPage: React.FC = () => {
     }
 
     let formData = new FormData();
-    formData.append("username", username);
+    formData.append("firstName", firstName);
+    formData.append("lastName", lastName);
+    formData.append("userName", userName);
     formData.append("email", email);
     formData.append("password", password);
     formData.append("description", description);
@@ -27,10 +32,10 @@ const SignUpPage: React.FC = () => {
     }
 
     axios
-      .post("http://localhost:3001/api/auth/register", formData)
+      .post(`${BaseURL}/auth/register`, formData)
       .then(function (response) {
         console.log(response);
-        window.location.href = "/";
+        window.location.href = "/signin";
       })
       .catch(function (error) {
         console.log(error);
@@ -60,6 +65,36 @@ const SignUpPage: React.FC = () => {
           <input type="hidden" name="remember" value="true" />
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
+              <label htmlFor="first-name" className="sr-only">
+                First Name
+              </label>
+              <input
+                id="first-name"
+                name="first-name"
+                type="text"
+                required
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm"
+                placeholder="First Name"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="last-name" className="sr-only">
+                Last Name
+              </label>
+              <input
+                id="last-name"
+                name="last-name"
+                type="text"
+                required
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-orange                500 focus:border-orange-500 focus:z-10 sm:text-sm"
+                placeholder="Last Name"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+              />
+            </div>
+            <div>
               <label htmlFor="username" className="sr-only">
                 Username
               </label>
@@ -70,10 +105,11 @@ const SignUpPage: React.FC = () => {
                 required
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm"
                 placeholder="Username"
-                value={username}
+                value={userName}
                 onChange={(e) => setUsername(e.target.value)}
               />
             </div>
+
             <div>
               <label htmlFor="email-address" className="sr-only">
                 Email address

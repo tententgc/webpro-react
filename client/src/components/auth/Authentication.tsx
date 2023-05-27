@@ -5,14 +5,15 @@ const Authentication = () => {
   const [authenticatedUser, setAuthenticatedUser] = useState<string | null>(
     null
   );
-  
+  const [role, setRole] = useState<string | null>(null);
   
   useEffect(() => {
     const checkUser = () => {
       const user = JSON.parse(localStorage.getItem("user") || "{}");
       if (user) {
         setAuthenticatedUser(user.user);
-      } 
+        setRole(user.user.role);
+      }
     };
 
     // Check user status when component mounts
@@ -32,6 +33,7 @@ const Authentication = () => {
   };
 
   console.log("authenticated",authenticatedUser);
+  console.log("role",role);
   return (
     <div>
       {authenticatedUser ? (
@@ -42,9 +44,16 @@ const Authentication = () => {
           <li className="text-gray-600 hover:text-blue-600">
             <Link to="/collection">My Collection</Link>
           </li>
-          <li className="text-gray-600 hover:text-blue-600">
-            <Link to="/about">About</Link>
-          </li>
+          {role === "admin" ? (
+            <li className="text-gray-600 hover:text-blue-600">
+              <Link to="/manage">Manage</Link>
+            </li>
+          ) : (
+            <li className="text-gray-600 hover:text-blue-600">
+              <Link to="/about">About</Link>
+            </li>
+          )}
+
           <li className="text-gray-600 hover:text-blue-600">
             <Link to="/contact">Contact</Link>
           </li>
