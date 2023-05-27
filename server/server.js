@@ -18,7 +18,16 @@ dotenv.config();
 
 // Serve static files from the 'uploads' directory
 app.use('/uploads', express.static('uploads'));
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/')
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + '-' + file.originalname)
+    }
+})
 
+const upload = multer({ storage: storage });
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.use('/api/auth', authRoute);

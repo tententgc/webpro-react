@@ -28,6 +28,14 @@ const UserSchema = new mongoose.Schema({
         type: String,
         default: '',
     },
+    viewcount:{ 
+        type: Number,
+        default: 0,
+    },
+    followers: {
+        type: Array,
+        default: [],
+    },
 },
     { timestamps: true }
 );
