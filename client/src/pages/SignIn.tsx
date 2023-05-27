@@ -9,10 +9,13 @@ const SignInPage: React.FC = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:3001/api/auth/signin", {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        `${process.env.REACT_APP_SERVER_API}/auth/signin`,
+        {
+          email,
+          password,
+        }
+      );
 
       if (response.status === 200) {
         localStorage.setItem("user", JSON.stringify(response.data));
